@@ -1,20 +1,62 @@
+
+
+h1,h2,h3{
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  max-width: 900px;
+}
+
 .paragraph { 
    text-indent: 30px;
+   margin-left: auto;
+   margin-right: auto;
+   display: block;
+   max-width: 900px;
 }
 
 .relevent-screenshot {
-   width: 10%;
+   width: 50%;
    height: auto;
+   margin-left: auto;
+   margin-right: auto;
+   display: block;
 }
 
-.comparative {
+ /* Three image containers (use 25% for four, and 50% for two, etc) */
+ .comparative {
   float: left;
-  width: 50%;
+  width: 33.33%;
   padding: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
+/* Clear floats after image containers */
 .row::after {
   content: "";
   clear: both;
   display: table;
+} 
+
+.metric_listing{
+  padding: 0;
+  text-indent: -25px;
+  margin-left: 25px;
+}
+
+* {box-sizing: border-box;}
+
+.img-magnifier-container {
+  position: relative;
+}
+
+.img-magnifier-glass {
+  position: absolute;
+  border: 3px solid #000;
+  cursor: none;
+  /*Set the size of the magnifier glass:*/
+  width: 400px;
+  height: 200px;
 }
