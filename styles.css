@@ -41,6 +41,7 @@ h1,h2,h3{
   display: table;
 } 
 
+
 .metric_listing{
   padding: 0;
   text-indent: -25px;
@@ -70,14 +71,14 @@ embed{
   padding-top: auto;
   padding-bottom: 45px;
 }
-iframe{
+.streamlit{
   height: 700px;
   width: 75%;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  /* padding-top: 45px;
-  padding-bottom: 45px; */
+  padding-top: 45px;
+  padding-bottom: 45px; 
 }
 
 label{
@@ -89,10 +90,74 @@ label{
 
 }
 
-.linkedin {
-  height: auto;
-  width: 100%;
-  display: list-item;
-  margin-left: 60px;
-  margin-right: 60px;
+.linkedin{
+  float: left;
+  padding: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block; 
+}
+/* 
+Making it wider didn't work */
+.pdf embed{
+  float: left;
+  width: 680px;
+  height: 1000px;
+  padding: 10px;
+}
+
+.unembedded {
+  width: 504px;
+}
+
+
+
+ /* The grid: Four equal columns that floats next to each other */
+ .column {
+  float: left;
+  max-width: 25%;
+  max-height: 450px;
+  padding: 10px;
+
+}
+
+
+/* Style the images inside the grid */
+.column img {
+  opacity: 0.8;
+  cursor: pointer;
+  max-width: 100%;
+  max-height: 450px;
+  padding: 10px;
+
+}
+
+.column img:hover {
+  opacity: 1;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* Closable button inside the image */
+.closebtn {
+  position: relative;
+  float: left;
+  left: 15px;
+  color: invert(1);
+  font-size: 35px;
+  cursor: pointer;
+} 
+
+
+
+/* The expanding image container (positioning is needed to position the close button and the text) */
+
+.container {
+  position:relative;
+  display: none;
+
 }

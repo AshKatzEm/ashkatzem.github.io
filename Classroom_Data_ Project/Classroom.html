@@ -3,24 +3,445 @@
 
 <head>
   <title>Asher Katz!</title>
+  <link href="../styles.css" rel="stylesheet">
+</link>
 </head>
 <h1>Classroom data experiment</h1>
-<p>I taught high school algebra to students with learning disabilities for a year and I used a lot of tech</p>
+<p class="paragraph">In the very beggining of 9/23, I was asked to teach high school algebra to students with learning disabilities through 6/24. I'm obsessed with trying to improve education. This was a silver platter offer to try out some of my ideas, many of which invovled emerging educational technologies in one form or another. It was an incredible experience and it both validated some of my ideas and opened my eyes to new ones. I think I learned more than the students and they definitly learned some stuff. Anyway, I designed a two year high school algebra 1 curriculum from the ground up and at the core, I used an educational platform called Quizizz. The goal was to minimize lecture as much as possible and instead learn through classwide interactive problem solving. A massive ancillary benefit of this system was that it generated a steady stream of data. I documented my attemps to do something with it on LinkedIn.</p>
 
 <body>
-  <iframe class="linkedin" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7137251661747494912" height="830" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
 
-  <iframe class="linkedin"  src="https://www.linkedin.com/embed/feed/update/urn:li:share:7137261467094900736" height="977" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+  <div class="row">
+    <div class="linkedin">
+      <iframe id="0" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7137251661747494912" height="829" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+    </div>
+    <div class="pictures">
+    </div>
+</div>
 
-  <iframe class="linkedin"  src="https://www.linkedin.com/embed/feed/update/urn:li:share:7145105141304619008" height="767" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
 
-  <iframe class="linkedin"  src="https://www.linkedin.com/embed/feed/update/urn:li:share:7147796682624155648" height="1464" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
 
-  <iframe class="linkedin"  src="https://www.linkedin.com/embed/feed/update/urn:li:share:7162535720958566400" height="949" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
 
-  <iframe class="linkedin"  src="https://www.linkedin.com/embed/feed/update/urn:li:share:7166903350796480512" height="1082" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+
+<div class="row">
+  <div class="linkedin"> 
+     <iframe id="1" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7137261467094900736" height="976" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+  </div>
+  <div class="pictures">
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="linkedin">
+  <iframe id="2" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7145105141304619008" height="766" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+  </div>
+  <div class="pictures">
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="linkedin">
+    <iframe id="3" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7147796682624155648" height="1462" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+  </div>
+  <div class="pictures">
+  </div>
+
+</div>
+
+
+    <!-- Outer row -->
+    <div class="row"> 
+      <div class="linkedin">
+  <iframe id="4" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7162535720958566400" height="947" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+      </div>
+      <div class="column">
+        <img   alt="First attempt at implementing a participation and score table" src="Images/update4table1.jpg" onclick="myFunction(this,'4');">
+      </div>
+    </div>
+  
+    <div class="row">
+      <!-- The expanding image container -->
+      <div class="container">
+        <!-- Close the image -->
+        <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+        <!-- Expanded image -->
+        <img alt="Click on a right side image to enlarge it" id="expandedImg4" >
+        <!-- Image text -->
+        <div id="imgtext4"></div>
+      </div> 
+    </div>  
+
+
+
+
+<div class="row">
+  <div class="linkedin">
+<iframe id="5" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7166903350796480512" height="1082" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+  </div>
+  <div class="pictures">
+  </div>
+</div>
+
+  
+  <!-- Outer row -->
+  <div class="row"> 
+
+    <div class="linkedin">
+      <img class="unembedded" alt="" src="Images/update6text.png" >
+    </div>
+
+    <div class="column">
+      <img   alt="mockup of Student participation, score, and accuracy table" src="Images/update6table1.jpg" onclick="myFunction(this, '6');">
+    </div>
+    <div class="column">
+      <img   alt="Mockup of Student score on topic table" src="Images/update6table2.jpg"  onclick="myFunction(this, '6');">
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- The expanding image container -->
+    <div class="container" id="six">
+      <!-- Close the image -->
+      <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+
+      <!-- Expanded image -->
+      <img alt="Click on a right side image to enlarge it" id="expandedImg6" >
+
+      <!-- Image text -->
+      <div id="imgtext6"></div>
+    </div> 
+</div>
+
+
+
+  <!-- Outer row -->
+  <div class="row"> 
+
+    <div class="linkedin">
+      <img class="unembedded" alt="update7text" src="Images/update7text.png" >    
+    </div>
+    <div class="column">
+      <img  alt="This is how correctness wass initially recorded" src="Images/update7table2.jpg" onclick="myFunction(this, '7');">
+    </div>
+    <div class="column">
+      <img  alt="First attempt at encoding correctness" src="Images/update7table1.jpg" onclick="myFunction(this,'7');">
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- The expanding image container -->
+    <div class="container" id="seven">
+      <!-- Close the image -->
+      <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+      <!-- Expanded image -->
+      <img alt="Click on a right side image to enlarge it" id="expandedImg7" >
+      <!-- Image text -->
+      <div id="imgtext7"></div>
+    </div> 
+  </div>
+
+
+<div class="row">
+  <div class="linkedin">
+      <iframe id="8" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7190482206685843456" height="829" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+  </div>
+  <div class="pictures">
+  </div>
+
+</div>
+
+
+
+<div class="row">
+  <div class="linkedin">
+      <iframe id="9" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7207510736565059584" height="1144" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+  </div>
+  <div class="pictures">
+  </div>
+
+</div>
+
+
+<div class="row">
+  <div class="linkedin">
+      <iframe id="10" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7207515032643866626" height="669" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+  </div>
+  <div class="pictures">
+  </div>
+
+</div>
+
+
+<div class="row">
+  <div class="linkedin">
+      <iframe id="11" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7208226972731068416" height="963" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+      </div>
+
+</div>
+
+
+
+
+<div class="row">
+  <div class="linkedin">
+      <iframe id="12" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7208231684150837250" height="711" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+  </div>
+  <div class="pictures">
+  </div>
+
+</div>
+
+
+<div class="row">
+  <div class="linkedin">
+    
+  <iframe id="13" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7208234243338977280" height="459" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+  </div>
+  <div class="pictures">
+  </div>
+
+</div>
+
+
+    <!-- Outer row -->
+    <div class="row"> 
+      <div class="linkedin">
+  <iframe id="14" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7210704674314665986" height="624" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+      </div>
+      <div class="column">
+        <img alt="Cleaned overview table" src="Images/update14table1.jpg" onclick="myFunction(this,'14');">
+      </div>
+    </div>
+  
+    <div class="row">
+      <!-- The expanding image container -->
+      <div class="container">
+        <!-- Close the image -->
+        <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+        <!-- Expanded image -->
+        <img alt="Click on a right side image to enlarge it" id="expandedImg14" >
+        <!-- Image text -->
+        <div id="imgtext14"></div>
+      </div> 
+    </div>
+
+
+
+
+  <!-- Outer row -->
+  <div class="row"> 
+
+    <div class="linkedin">
+<img class="unembedded" alt="update15text" src="Images/update15text.png" >
+    </div>
+
+    <div class="column">
+      <img  alt="Bar graph of total tags" src="Images/update15plot1.jpg"  onclick="myFunction(this,'15');">
+    </div>
+    <div class="column">
+      <img   alt="Pie chart of likely-hood that a question has a particular topic" src="Images/update15plot2.jpg"  onclick="myFunction(this,'15');">
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- The expanding image container -->
+    <div class="container" id="fifteen">
+      <!-- Close the image -->
+      <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+
+      <!-- Expanded image -->
+      <img alt="Click on a right side image to enlarge it" id="expandedImg15" >
+
+      <!-- Image text -->
+      <div id="imgtext15"></div>
+    </div> 
+  </div>
+
+
+
+
+
+  <!-- Outer row -->
+  <div class="row"> 
+
+    <div class="linkedin">
+<img class="unembedded" alt="update16text" src="Images/update16text.png" >
+    </div>
+
+    <div class="column">
+      <img  alt="Student score on topic attempt 1" src="Images/update16plot1.jpg"   onclick="myFunction(this,'16');">
+    </div>
+    <div class="column">
+      <img   alt="Student Score on topic attempt 2" src="Images/update16plot2.jpg"  onclick="myFunction(this,'16');">
+    </div>
+    <div class="column">
+      <img  alt="Student score on topic attempt 3" src="Images/update16plot3.jpg"  onclick="myFunction(this,'16');">
+    </div>
+    <div class="column">
+      <img   alt="Student score on two topics attempt 1" src="Images/update16plot4.jpg"  onclick="myFunction(this,'16');">
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- The expanding image container -->
+    <div class="container" id="sixteen">
+      <!-- Close the image -->
+      <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+
+      <!-- Expanded image -->
+      <img alt="Click on a right side image to enlarge it" id="expandedImg16" >
+
+      <!-- Image text -->
+      <div id="imgtext16"></div>
+    </div> 
+  </div>
+
+
+  <!-- Outer row -->
+  <div class="row"> 
+
+    <div class="linkedin">
+<img class="unembedded" alt="update17text" src="Images/update17text.png" >
+    </div>
+
+    <div class="column">
+      <img alt="Student score on topic attempt 4" src="Images/update17plot1.jpg"  onclick="myFunction(this,'17');">
+    </div>
+    <div class="column">
+      <img   alt="Student score on topic attempt 5" src="Images/update17plot2.jpg"  onclick="myFunction(this,'17');">
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- The expanding image container -->
+    <div class="container" id="seventeen">
+      <!-- Close the image -->
+      <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+
+      <!-- Expanded image -->
+      <img alt="Click on a right side image to enlarge it" id="expandedImg17" >
+
+      <!-- Image text -->
+      <div id="imgtext17"></div>
+    </div> 
+  </div>
+
+
+
+    <!-- Outer row -->
+    <div class="row"> 
+      <div class="linkedin">
+  <iframe id="18" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7219014045251579904" height="1003" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+      </div>
+      <div class="column">
+        <img alt="Student score on two topics attempt 2" src="Images/update18plot.jpg"  onclick="myFunction(this,'18');">
+      </div>
+    </div>
+  
+    <div class="row">
+      <!-- The expanding image container -->
+      <div class="container">
+        <!-- Close the image -->
+        <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+        <!-- Expanded image -->
+        <img alt="Click on a right side image to enlarge it" id="expandedImg18" >
+        <!-- Image text -->
+        <div id="imgtext18"></div>
+      </div> 
+    </div>
+
+
+
+  
+
+
+
+
+
+    
+
+  <div class="row">
+    <div class="linkedin">
+        <iframe id="19" src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7219051798303518721" height="1384" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+    </div>
+    <div class="pdf">
+        <embed src="Images/Feature_Importance.pdf" type="application/pdf">
+    </div>
+  </div>
+
+
+
+
+
+    <!-- Outer row -->
+    <div class="row"> 
+      <div class="linkedin">
+  <iframe id="20" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7219409322307448833" height="1405" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+      </div>
+      <div class="column">
+        <img alt="Formulation of Mean Decrease in Impurity" src="Images/update20formula.jpg" onclick="myFunction(this,'20');">
+      </div>
+    </div>
+  
+    <div class="row">
+      <!-- The expanding image container -->
+      <div class="container">
+        <!-- Close the image -->
+        <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+        <!-- Expanded image -->
+        <img alt="Click on a right side image to enlarge it" id="expandedImg20" >
+        <!-- Image text -->
+        <div id="imgtext20"></div>
+      </div> 
+    </div>
+
+
+  
+
+
+  <div class="row">
+    <div class="linkedin">
+        <iframe id="21" src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7219760822267322368" height="1329" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+    </div>
+    <div class="pdf">
+      <embed src="Images/Feature_Importance2.pdf" type="application/pdf">
+    </div>
+  
+  </div>
+  
+
+  <div class="row">
+    <div class="linkedin">
+  <iframe id="22" src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7219806492361678848" height="1266" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+    </div>
+    <div class="pdf">
+      <embed src="Images/Feature_importance2.pdf" 
+      type="application/pdf">
+    </div>
+  
+  </div>
+  
+
+
+
 
 
 </body>
+<script>
+  function myFunction(imgs, id) {
+    // Get the expanded image
+    var expandImg = document.getElementById("expandedImg" + id);
+    // Get the image text
+    var imgText = document.getElementById("imgtext" + id);
+    // Use the same src in the expanded image as the image being clicked on from the grid
+    expandImg.src = imgs.src;
+    // Use the value of the alt attribute of the clickable image as text inside the expanded image
+    imgText.innerHTML = imgs.alt;
+    // Show the container element (hidden with CSS)
+    expandImg.parentElement.style.display = "block";
+  } 
+  </script>
 
 </html>
