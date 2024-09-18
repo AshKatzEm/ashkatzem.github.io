@@ -61,29 +61,100 @@ o	Create a filler date column:
 •	Maybe take the median of the in range years
 •	Model the data in pandas 
 •	Hook it up to the existing Streamlit visualization  -->
+<!-- GridSearchCV and RandomizedSearchCV and DecisionTreeClassifier, RandomForestClassifier,HistGradientBoostingClassifier, XGBClassifier, GradientBoostingClassifier, LogisticRegression, GaussianNB -->
 
   <ol>
-    <li>Find a data warehouse. Possible snowflake or postgres 
+    <li>Decide which relational database to use.
+      <p class="bullet-answer"> I decided to use PostGreSQL because I have past experience with it, it's free, and it's widely used and supported</p>
+    </li>
 
-    <li>Build web scraper, possibly in a Docker
+    <li>Build a web scraper.
       <ul>
-        <li>Connect to the website</li>
-        <li>each game creates a row of six values</li>
-        <li>add those as a row to Postgres</li>
-        <li>create a backup pandas df and add all the data to that</li>
+        <li>Connect to the website using Selenium.
+          <p class="bullet-answer">I'm getting data from ESRB.com</p>
+        </li>
+        <li>Identify what we want to scrape
+          <p class="bullet-answer">There are entries on the website for tens of thousands of games. Each game has six values associated with it, what I labled: game_title, esrb_rating, content_descriptors, interactive_elements, content_summary, platform,</p>
+        </li>
+        <li>Decide how to best harvest them.
+          <p class="bullet-answer">We can directly add those values as a row in a Postgres table which I called RawData. I created a backup pandas DataFrame which periodically downloads as rawdata.csv</p>
+        </li>
+        <li>.</li>
       </ul>
     </li>
-    <li>Connect the web scraper to the warehouse
-      <ul></ul>
-        <li>Using a credentials file </li>
-        <li>Using psycopg2</li>
+    <li>Connect the python web scraper to the relational database.
+      <ul>
+        <li>Identify which package[s] we will use to connect a python scrip to a PostGres database.
+          <p class="bullet-answer">I like the Psychopg2 package for it's simplicity and similiarity to SQL relational database querying</p>
+        </li>
+        <li>Identify how to safely automate authentication and connection to the database.
+          <p class="bullet-answer">I used a credentials.ini file, as well as a couple of python helper functions, configuration.py and connect.py, to ensure that the process consistently runs smoothly</p>
+        </li>
       </ul>
+    </li>
+    <li>Build an ELT pipeline which moves the data into the warehouse, organizes it and transforms it.
+      <ul>
+      <li>Extracting the data.
+        <p class="bullet-answer">Query the site and when a datapoint is found, add it as a row to a temporary SQL table called rawdata</p>
+      </li>
+      <li>Loading the data.
+        <p> When the results of the query are completely parsed, add an id column and load the rawdata table into the PostGreSQL warehouse</p>
+      </li>
+      <li>Merge the data.
+        <p class="bullet-answer">Join the rawdata table with previously collected data, eliminating any repeated datapoint which have been previously collected </p>
+      </li>
+      <li>Repeat these three steps until all queries have been parsed or favor is lost with the web gods.</li>
+      <li>Transform the data:
+        <p class="bullet-answer">This step automatically begins when the previous step is reached</p>
+        <ol>
+          <li>Remove any virtually identical rows</li>
+          <li>Split the comma-seperated-list "platform" column into a more numerous one-platform-per-row column.</li>
+          <li>Append ancillary data from external tables such as "release_date", "genres", and "sales". </li>
+          <li>One-hot encode the comma-seperated-list "content_descriptors" column into numerous single-descriptor columns </li>
+          <li>Output a csv file with all transformed data for modeling.
+            <p class="bullet-answer"> Surprisingly challenging. I ultimately had to save it to the /tmp directory and then move it into a more convient spot.</p>
+          </li>
+        </ol>
+      </li>
+    </ul>
+    </li>
+    <li>Do more-complicated data wrangling in pandas which I want to try.
+      <p class="bullet-answer"> There's now many rows missing data which couldn't be found in the ancillary tables</p>
+      <ul>
+        <li>Try to impute the 50% of the release_year which are Nan.
+          <ol>
+            <li>Create a dictionary which contains three pieces of information about each platform:
+              <ul>
+                <li>The year the platform was released</li>
+                <li>The year the platform was discontinued</li>
+                <li>The "generation" of the console</li>
+              </ul>
+            </li>
+            <li>For each game which is missing a release_year, look for the game on another platform of the same generation but where release_year is present. If found, set the missing release_year to that found release_year</li>
+            <li>For each game which all platforms, from the same generation, of the game have no release_year, for each set of games of the same platform generation, set the release_year to be the mean of the intersection years of the latest console release date (it couldn't have come out before that) and the earliest console discontinue date (it couldn't have come out after that).</li>
 
+          </ol>
+        </li>
+        <li> Try to impute some of the 85% of sales data which is missing</li>
+        <li>Make little tweaks to allow various types of models to train on the data</li>
+      </ul>
     </li>
-    <li>Build a pipeline which moves the data into the warehouse, organizes it and transforms it, ELT</li>
-    <li>Output a csv file with all transformed data</li>
-    <li>Do some more-complicated data wrangling in pandas to impute missing information in the dataset for Kaggle</li>
-    <li>Model the data, possibly using existing infastructure</li>
+    <li>Decide what model to use with the dataset.</li>
+      <ul>
+        <li>I decided to manually evaluate various different models in a ipynb notebook. This way I could get a more intuative sense of the variance and data format preferences of each of the various models and take advantage of the unique information that some models provided along with their predictions. </li>
+        <li> I explored seven different models:
+          <ul>
+            <li>DecisionTreeClassifier</li>
+            <li>GaussianNB</li>
+            <li>LogisticRegression</li>
+            <li>XGBClassifier</li>
+            <li>HistGradientBoostingClassifier</li>
+            <li>GradientBoostingClassifier</li>
+            <li>RandomForestClassifier</li>
+
+          </ul>
+        </li>
+      </ul>
     <li>Does it improve the performance of the previous model</li>
     <li>Hook the new model up to streamlit</li>
   </ol>
