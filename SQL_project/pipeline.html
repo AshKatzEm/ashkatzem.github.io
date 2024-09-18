@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>ESRB Rating</title>
+    <link href="../styles.css" rel="stylesheet">
+    </link>
+
+</head>
+<h1> Predicting ESRB Rating</h1>
+<h2>Fall 2022 group project </h2>
+<h3> <a href="https://github.com/AshKatzEm/SQLproject.git" >Github Repository</a>
+</h3>
+
+<body class="esrb">
+  <p class="Introduction paragraph">
+    I built a pipeline which scraped 58,000 rows of ESRB data, automatically moved it to a PostgreSQL database and then cleaned and transformed it into a CSV dataset. Afterwards, I did some upgraded modeling of it in python based on my previous experience modeling ESRB data.
+  </p>
+<!-- 
+  •	Find a data warehouse. Possible snowflake or postgres
+•	Build web scraper, possibly in a Docker
+o	IT WILL CONNECT THE DATA WAREHOUSE
+o	Using a credentials file 
+o	INITIALIZE A TEMPORARY RAW DATA TABLE 
+o	It will search a letter in ESRB site
+o	Gather the 6 data points from each row
+o	TRY TO  PASS THOSE POINTS AS A ROW INTO THE TEMPORARY TABLE, EITHER ONE AT A TIME OR ADD THEM TO A STRING WITH THE PROPER SQL FORMATTING AND PASS THAT WHOLE BIG THING LATER.
+•	Working with at least 8 datasets, probably tons of overlap
+•	Need to do a number of transformations.
+o	Need to replace consoles in the middle of Interactive_Elements with ‘, ‘ [  \s\(.*\).*  and at the end with ‘.’
+o	Load the date reference files:
+	Try to standardize the console names in the Refrence tables
+	Try one hot encoding the  
+o	Use that to gather any release dates possible
+o	Need to combine the rows where everything is the same but console into one row with a list of all the consoles.
+•	Need to do pipeline transformations
+o	Build into the scraper script a LOADER with sqlalchemy:
+	A program which automatically connects to postgres
+	Using a credentials file 
+	Takes a scraped csv without downloading it (maybe generate a new one every 1000 rows)
+	Creates a postgres table out of it
+	Merges that table into a main table
+	Performs all of the transformations
+	Saves that main table 
+o	The final Postgres table will be put on Kaggle
+•	Additional Transformation DBT?
+o	Create a #consoles feature
+o	Create a #descriptors feature
+o	Separate the consoles into one-hot columns
+o	Separate the content descriptors into one-hot columns
+o	Create a filler date column:
+	See if the title has any year in it
+	If not, add an average date
+•	 make an average release date for a game on each console
+•	Add up all of the avg date release dates and divide by the # consoles
+	Or add a parametrized date:
+•	Find the range of when games where coming out for each console
+•	Find a year that is within the range of all the consoles
+•	Maybe take the median of the in range years
+•	Model the data in pandas 
+•	Hook it up to the existing Streamlit visualization  -->
+
+  <ol>
+    <li>Find a data warehouse. Possible snowflake or postgres 
+
+    <li>Build web scraper, possibly in a Docker
+      <ul>
+        <li>Connect to the website</li>
+        <li>each game creates a row of six values</li>
+        <li>add those as a row to Postgres</li>
+        <li>create a backup pandas df and add all the data to that</li>
+      </ul>
+    </li>
+    <li>Connect the web scraper to the warehouse
+      <ul></ul>
+        <li>Using a credentials file </li>
+        <li>Using psycopg2</li>
+      </ul>
+
+    </li>
+    <li>Build a pipeline which moves the data into the warehouse, organizes it and transforms it, ELT</li>
+    <li>Output a csv file with all transformed data</li>
+    <li>Do some more-complicated data wrangling in pandas to impute missing information in the dataset for Kaggle</li>
+    <li>Model the data, possibly using existing infastructure</li>
+    <li>Does it improve the performance of the previous model</li>
+    <li>Hook the new model up to streamlit</li>
+  </ol>
+
+
+
+
+
+    <iframe class="streamlit" src="https://sqlproject-2as5kapbpic5kicy56dj4f.streamlit.app/?embed=true"></iframe>
+
+  
+
+
+
+</body>
+
+</html>
+
