@@ -10,7 +10,7 @@
 
 </head>
 <h1> Predicting ESRB Rating</h1>
-<h2>Fall 2022 group project </h2>
+<h2>Summer project 2024 </h2>
 <h3> <a href="https://github.com/AshKatzEm/SQLproject.git" >Github Repository</a>
 </h3>
 
@@ -146,7 +146,7 @@ o	Create a filler date column:
           <ul>
             <li>RandomForestClassifier:</li>
             <p class="bullet-answer"> We ran with a RandomForestClassifier model last time we modeled ESRB, so the natural place to start would be to try the same model.
-            what were the scores? There was a definite improvement in performance across all catagories. The overall accuracy increased to 88% by 2-3% and the variance was frustratingly improved. I had to put a decent amount of effort to move the model's perform by any registerable amount (11 sig fig), just to make sure the model was working correctly.</p> 
+            what were the scores? There was a definite improvement in performance across all catagories. The overall accuracy increased to 88.0706%, a 2-3% increase and the variance was frustratingly improved. I had to specifically print 5 sig-figs to see any change between one implementation and another.</p> 
             <div class="row-models">
               <div class="column-models" >
                 <img src="Images/rfConf.png" class="Confusion" alt="Random Forest Confusion Matrix">
@@ -158,7 +158,7 @@ o	Create a filler date column:
             
 
 
-            <li>BernoulliNB</li>
+            <li>BernoulliNB:</li>
             This is MultinomialNB but for binary features. I wanted to see how probablistic algorithms would work on the data, especially with much more data. In terms of performance, it performed a fair amount worse then RFC. The overall accuracy was 82% and struggled to positively identify Rated E10+. Further, and this happened with a couple other models, some strange is happening with the AO test samples. In this case, BNB only registers two "AO" test samples, when in reality there are 6. This doesn't change when I try rerunning the model. Since AO is a very small subset of the data, as of now 27 rows, it has virtually no effect on the model. Further, the reality is that, for practical reasons, AO is a death sentence for the commercial prospects of a game, so it seems to me that the ESRB and developers always work together to get any content to fit into a rated M, so it's really an academic catagory. Something similiar occured with the next model as well.
             <div class="row-models">
               <div class="column-models" >
@@ -170,7 +170,7 @@ o	Create a filler date column:
             </div>
 
 
-            <li>LogisticRegression</li>
+            <li>LogisticRegression:</li>
             I tried this because I still wanted to see how probablistic algorithms would work on the data. Perhaps there's a certian threshold that can be found in the data. It performed about the same as NB, which isn't surprising. Here also, something strange happened with the AO test samples, it said there were no when in reality there were 6. This doesn't change when I try rerunning the model.
             <div class="row-models">
               <div class="column-models" >
@@ -181,7 +181,7 @@ o	Create a filler date column:
             </div>
             </div>
 
-            <li>XGBClassifier</li>
+            <li>XGBClassifier:</li>
             Firstly, Gradient Boosting is an algorithm that everyones talks about. It combines several weak learners into strong learners, in which each new model is trained to minimize some form of Gradient descent, each iteration hopefully stronger in a particular area than previously. Everyone raves about XG[radient]B[oosting] and it's frequenty said that it generally outperforms RF. I think in general, it is a top performer with continuous features but I wanted to try it out anyway. Suffice to say, vanilla XGB performed a bit worse then vanilla RF. With some simple hyper-parameter tuning, I got it performing nearly identical to vanilla RF.
             <div class="row-models">
               <div class="column-models" >
@@ -193,7 +193,7 @@ o	Create a filler date column:
             </div>
 
 
-            <li>HistGradientBoostingClassifier</li>
+            <li>HistGradientBoostingClassifier:</li>
             XGB was a bit lack luster so I decided to try a more traditional gradient boosting algorithm. Traditionally, Gradient boosting was a slower training process, so I started with Histogram-Gradient_boosting, which speeds up the gradient descent by binning the data values. This is used for bigger datasets and maybe my dataset was pretty large. The performance was a fair amount worse than RF. It didn't take long to train however. Here also, something strange happened with the AO test samples. Unlike with the probability based models, Everytime I run this model, it shows up with a slightly different sample distribution. Further, one can tell something is not right because it says there are 88 AO samples, when the entire dataset has only 27. The other two GB models I tried did not exhibit this behavior, so I believe this algorithm is binning the samples by their features, taking the most inapporiate games and binning them into AO. I'm sure this could be corrected by adjusting the hyper parameters but I don't think this model is what we need so I'm not going to waste my time trying to do that.
             <div class="row-models">
               <div class="column-models" >
@@ -204,7 +204,7 @@ o	Create a filler date column:
             </div>
             </div>
 
-            <li>GradientBoostingClassifier</li>
+            <li>GradientBoostingClassifier:</li>
             Since HistogramGB didn't take long, I decided to try regular GB. It took a good deal longer with about the same performance as HistogramGB. I decided I was going to try to optimize the hyper parameters. After about the 13 minutes of run time, I got it performing nearly identical to vanilla RF.
             <div class="row-models">
               <div class="column-models" >
@@ -215,8 +215,8 @@ o	Create a filler date column:
             </div>
             </div>
 
-            <li>DecisionTreeClassifier</li>
-            If RF performed so well, maybe decision trees are well suited for this dataset. So I tried regulur Decision tree, which uses Gini Impurity to build a single good decision tree, compared to RF aggragating a "forest" of overfit trees. The performance was identical to RF. This was not the case when we modeled ESRB data a couple years ago. There might be some variance but it's always in range of the RF model
+            <li>DecisionTreeClassifier:</li>
+            If RF performed so well, maybe decision trees are well suited for this dataset. So I tried regulur Decision tree, which uses Gini Impurity to build a single good decision tree, compared to RF aggragating a "forest" of overfit trees. The accuracy was very close to RF, at 87.6675%. This was not the case when we modeled ESRB data a couple years ago. There might be a bit more variance but the difference in accuracy was never more than 0.5%
             <div class="row-models">
               <div class="column-models" >
                 <img src="Images/DTCConf.png" class="Confusion" alt="Random Forest Confusion Matrix">
@@ -225,19 +225,175 @@ o	Create a filler date column:
               <img src="Images/DTCPerf.png" class="Perform" alt="Random Forest Confusion Matrix">
             </div>
             </div>
+
+            <figure>
+              <img class="tree" src="Images/decisionTree.svg" alt="The tree build by DecisionTreeClassifier">
+              <figcaption id="tree">Here is an overview of the decision tree built by DecisionTreeClassifier. Context click and Open Image in New Tab to view the details.</figcaption>
+          </figure>
+          
+           
             
 
 
           </ul>
         </li>
-        <li>I decided to roll with Random Forest it since quickly peforms the best with no variance. Can I improve the performance by optimizing the hyperparameters?</li>
+        <li>I decided to roll with Random Forest it since quickly performs the best, with almost no variance. Could I improve it's performance by optimizing the hyperparameters?</li>
         <ul>
-          <li>RandomizedSearchCV</li>
+          <li>RandomizedSearchCV</li
+            >
+            The first type of hyper-parameter optimization searching I did was a RandomizedSearchCV. The CV stands for Cross-validation and the idea is that it reduces the risk of overfitting compared to our single train-test split which we used when initially training the model. It's commonly called k-fold cross-validation becuase we split the dataset into k equally sized "folds". The model is trained k times, with each fold serving as the validation set once and the remaining folds as the training set. The big picture is that we can understand how our model performs under all the circustances in the data. What RandomizedSearch does is takes a "grid" of hyper-parameter values for various parameters and trains a model with a random parameter configuration from the grid k times, each time with the data redistributed. We're answering the question: How did the model perform, with a random configuration of parameters, on the dataset in general? If we answer that question, say 8000 times, we can "Search" the answers for the best configuration. Often, you take that configuration and you make a new grid with similiar values to that configuration, and run the process again. Through this, we home in on the best configuration overall. Random search is a great place to start when you don't know where to start. Intitially, I felt like if we were going to find better performance, it would probably be somewhere the RF algorithm didn't look. I ran 7 hours of Random search, slowy improving the accuracy from bad to decent, before I decided that I was probably wasting my time. I started from a grid of truly random parameters hoping to find somewhere which the model overlooked. I should have trusted the model and started from a grid of parameters like the ones the model used.
+
           <li>GridSearchCV</li>
+          When we home in on a set of high performing hyper-parameter, we can choose to do a more thorough GridSearchCV. It's the same idea as a random search but every combination of parameters in the grid is tried. This makes it much more focused on a small area compared to random search. Based on my experience with the Random Search, the initial parameters of the RF model were:
+        <ul>
+          <li>'bootstrap': True,</li>
+          <li>'ccp_alpha': 0.0,</li>
+          <li>'class_weight': None,</li>
+          <li>'criterion': 'gini',</li>
+          <li>'max_depth': None,</li>
+          <li>'max_features': 'sqrt',</li>
+          <li>'max_leaf_nodes': None,</li>
+          <li>'max_samples': None,</li>
+          <li>'min_impurity_decrease': 0.0,</li>
+          <li>'min_samples_leaf': 1,</li>
+          <li>'min_samples_split': 2,</li>
+          <li>'min_weight_fraction_leaf': 0.0,</li>
+          <li>'n_estimators': 100,</li>
+          <li>'n_jobs': None,</li>
+          <li>'oob_score': False,</li>
+          <li>'random_state': None,</li>
+          <li>'verbose': 0,</li>
+          <li>'warm_start': False</li>
+        </ul>
+        <br>These seemed very vanilla to me but I went with them. I created a 17 dimension array (AKA grid) of parameters which had 8000 combinations and I ran each with 3 folds. That means we are running the RF 24,000 times, which took around 6 hours. Suffice to say, it never quite reached the performance of the original model. It's hard to say with certainty why is never quite reached that score but I think it's because when we originally trained the model, it was using a 4:1 train-test ratio, and this was a 2:1 test ratio. Matching that would take maybe twice as long and I've had issues running programs for so long. I tried increasing the number of folds but either google or my computer timed out. Based on what performed well in the 3 fold run, it's very clear that any deviation from the original parameter combination either lowers performance or has no impact. I spent many hours trying to find a concise way to visualize this idea but with only moderate success.
+
+        <h4> Pruning alpha hyperparameter</h4>
+        <div class="container2">
+          <div class="left">
+            <figure>
+            <img src="Images/ccpalpha.png" class="Param" alt="cc_alpha vs. accuracy">
+            
+            <figcaption>
+              Higher values of ccp_alpha increase the number of nodes pruned. A tree which is uneccesarily large will overfit. An algorithm called Minimal Cost Complexity Pruning recursively finds the node with the lowest alpha value and prunes it. Alpha represents the probability of obtaining your results due to chance. The smaller this value is, the more “unusual” the chance result would be. This graph clearly shows no pruning is better than 10% alpha pruning. Unfortunately, that's not definitive proof that our model shouldn't be pruned.
+            </figcaption>   
+            </figure>
+
+          </div>
+          <div class="right">
+            <figure>
+             <img src="Images/ccpAlphaGraph.png" class="Param" alt="General effect of alpha pruning on RF model">
+             <figcaption>
+              Here is the general effect of pruning on my RF model. As you can see, the more pruning, worse the model does. Something interesting about this graph is that the model's prediction accuracy on it's OWN training data is not even close to 100%. We'll discuss that later. I always heard that 0 alpha pruning will overfit the decision tree but that is clearly not true here. Perhaps that was talking about only a single decision tree. The biggest answer is probably since there's so much data, the model can't overfit. It's seen every concievable situation 10 times, if not 1000 times. Every branch it builds is sturdy and supported by many examples. 
+             </figcaption>
+            
+
+            </figure>
+
+          </div>
+        </div>
+
+        <h4> Setting a minimum number of samples required for nodes hyperparameter</h4>
+        <div class="container2">
+          <div class="left">
+            <figure>
+            <img src="Images/minsampleaf.png" class="Param" alt="minimum samples per leaf vs. accuracy">
+            <figcaption>
+              A leaf node is the bottom layer of nodes, the nodes with no children.  min_samples_leaf specifies the minimum number of samples required to build a leaf node. For every min-samples-per-leaf value, we have a low-accuracy cluster and a smaller, high-accuracy cluster. I interpret this as saying that whatever the min-samples-per-leaf is, your model could perform well, AKA min-samples-per-leaf doesn't matter for performance. However, it's a bit more than that. You performance could get very slightly better as we approach no minimum, the original parameter value of the RF model. 
+            </figcaption>
+            </figure>
+          </div>
+
+          <div class="right">
+            <figure>
+              <img src="Images/minsampsplit.png" class="Param" alt="minimum samples per split vs. accuracy">
+              <figcaption>
+              An internal node is a node that's inside the tree, nodes that have parents and children. min_samples_split specifies the minimum number of samples required to split an internal node into two children nodes. Similiar to min-samples-per-leaf, we have a low-accuracy cluster and a smaller, high-accuracy cluster. Here however, all the high accuracy clusters are near identical. I interpret this as saying that whatever the min-samples-per-split is, your model could perform well, AKA min-samples-per-split doesn't matter for performance. 
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+
+        <h4> Setting a minimum leaf fraction hyperparameter</h4>
+        <div class="container2">
+
+          <div class="left">
+            <figure>
+            <img src="Images/minweightfractionleaf.png" class="Param" alt="minimum weight fraction leaf vs. accuracy">
+              <figcaption>
+                The weighted fraction of samples per leaf is a fraction that weights a leaf so that it gets more samples coming to it. By setting a minimum weight fraction for every leaf, it gaurantees that every leaf will have at least a certain percentage of the samples in it. This is very similiar to min-samples-per-leaf, the only difference being that uses an explict number for a min and this uses a percentage for a min. This graph clearly shows no weighting is better than at least 10% of the sample per leaf. Unfortunately, as before that's not definitive proof that our leaves shouldn't be weighted.
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class = 'right'>
+            <figure>
+              <img src="Images/Min_weightGraph.png" class="Param" alt="General effect of setting a minimum weight of sample per leaf">
+              <figcaption>
+                Here is the general effect of setting a minimum weight per leaf on the RF model. As you can see, any amount of weighting the leaf-samples hurts the predictive performance of the model. Again, interesting to note the training accuracy is only around 91%.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+
+        <h4> Setting the number of estimators or minimum amount of purification required to split a node hyperparameters</h4>
+        <div class="container2">
+          <div class="left">
+            <figure>
+              <img src="Images/nestimators.png" class="Param" alt="number of estimators vs. accuracy">
+              <figcaption>
+                This result was a bit surprising to me at first. Firstly, I think I meant to set the range to 50-150, but I interpret this result to mean that it doesn't matter. As we said previously about this type of distribution, I'm interpreting this to mean that whatever the number of estimators is, your model could perform well, AKA number of estimators, at least between 50-100, doesn't matter for performance. If performance doesn't increase, even slightly, as we go from 50 to 100, why would it increase slightly as we go from 100 to 150. In my Random search, I saw that going as high as 600 didn't change the performance.
+              </figcaption>
+            </figure>
+          </div>
+
+        
+          <div class="right">
+            <figure>
+              <img src="Images/minipuritydecrease.png" class="Param" alt="The minimum impurity decrease required to split, vs. accuracy">
+              
+              <figcaption>
+                The impurity of a node is a metric based on the number of samples which are not supposed to be in that node. It's simply a way of saying missclassification at a node. The goal of every node split is to take the pure parts and go right with them and the impure parts and go left with them, each child now having a lower impurity. We can set a minimum impurity decrease required to make a split. Basically, don't split unless it's going to reduce the impurity of the children by an certain amount. There's no reason to think setting a minimum would help our model, especially since this is somewhat related to the other minimums we discussed and those were both unequivocably bad for the model performance.
+
+              </figcaption>
+            </figure>
+            
+          </div>
+        </div>
+
+
+
+
         </ul>
       </ul>
-    <li>Does it improve the performance of the previous model</li>
+    <li>A few questions remained:</li>
+      <ul>
+        <li>None of these parameters seemed to increase performance. Furthur, in 24000 trainings, we never once acheived as high an accuracy as when we ran the defualt model. What parameters get us from where we are to where the defualt model is?</li>
+        <p class="bullet-answer">The first thing to note is that one, pretty much unparameterized decision tree almost exactly matched the RF performance. It's reasonable to think that a forest of decision trees would be similiarly unparameterized. Parameters are all just restrictions on the model. Letting the model go unrestricted on this data has been shown to be advantageous. It's hard to express exactly why unrestrained tree building works so well on this data but if you browse through the decision tree (Open Image In a New Tab), you get a bit of intuition. I didn't see leaves (conclusions) which I fel were overfit. The loss of accuracy emerged from very small scale contradiction in the data. For example, there are 17 games with these 7 features values, 15 of them are M, 2 of them are T. There's an 86.7% chance the game is M. Sometime, there's only one game which has a particular set of feature values. Why restrict that branch from being created? Any alternative guess would likely be less accurate.  </p>
+
+        <li>How can the training accuracy of the model only 91% ? Has the model not mastered it's own data? </li>
+        <p class="bullet-answer">This question is actually pretty common and WAY UNDER ADDRESSED in my opinion. I found a few people asking about this online and I found even fewer people discussing it and or suggesting answers. From what I gathered, it's a very fundamental and important question with some very intuitive answers that I found eye-opening. Here's what I gathered:<br>
+        The basic answer is that the model is not complex enough to perfectly memorize the patterns in the training set. Ok fine, how and why is that?<br>
+        Increasing the model's complexity, such as using more or deeper trees, could potentially improve the training accuracy, but it could also lead to overfitting. We found that decreasing the complexity by any amount seriously hurts the model, so more complexity would be the natural way to go. But maybe the model must have found that, at the very least, furthur complexity doesn't increase testing accuracy, let alone decrease it. A related reason, which I don't think is at play with our model, is that some models commonly have default and or set hyperparameters which attempt to prevent this very overfitting by intentionally causing the model to memorizing the data a little less, in one way or another. The most common example of this is model which "regularize" the data before training on it such as variants of OLS regression like Ridge regeression.
+        Another factor, which we touched on in the first question, is that there are numerous place in the data where, for example, you have 17 games with identical values for every feature, yet there's an 86.7% chance it's an M, and a 13.3% chance its a T. You feed that set of features into the model, no amount of training or familiarity with the data can allow you to increase your chances of guessing correctly.
+        </p>
+
+        <li> If the accuracy on training data is only 91%, how can we expect the testing score to increase anymore than 88% ?</li>
+      </ul>
+    
+
+
     <li>Hook the new model up to streamlit</li>
+
+    <li>Where to improve?
+      <ul>
+        <li>Better release dates</li>
+        <li>Featurize the content summary and interactive elements</li>
+        The last 12% accuracy is because of the probabilty events at some of the leaves on the tree, 9 games with these features go T, 1 game with these features goes M. If you got more specific about what exactly happens in the game that makes it an M, you would probably be able to gain some additional accuracy. 
+      </ul>
+
+    </li>
   </ol>
 
 
