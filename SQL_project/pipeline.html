@@ -16,59 +16,16 @@
 
 <body class="esrb">
   <p class="Introduction paragraph">
-    I built a pipeline which scraped 58,000 rows of ESRB data, automatically moved it to a PostgreSQL database and then cleaned and transformed it into a CSV dataset. Afterwards, I did some upgraded modeling of it in python based on my previous experience modeling ESRB data.
+    I built a pipeline which scraped ~58,000 rows of ESRB data, automatically moved it to a PostgreSQL database and then cleaned and transformed it into a CSV dataset. Afterwards, I did some upgraded modeling of it in python based on my previous experience modeling ESRB data. Overall, after much searching, I again selected a Random Forest model, this time predicting 88% accurately with almost no variance, σ = 0.078. In the past, we were predicting ~84%-86% accurately, lower performance with 20x more variance. Using a decision tree based model with so much data illustrated the unique power of decistion trees for simply mapping out the dataset. A single decision tree had almost has good performance, and while it was massive at 4665 nodes, it was very easy to read, traversed with hard facts and on the bottom line made very sound conclusions. This project also starkly illustrated the power of content descriptors, and more importantly, their occasional shortcomings. Despite these shortcomings, by the time I finished writing up this project, I'd already thought of a few areas to further improve the dataset as well as the model. I posted this dataset on Kaggle but I will hopefully be posting and improved version soon, as well as some of my modeling notebooks.
   </p>
-<!-- 
-  •	Find a data warehouse. Possible snowflake or postgres
-•	Build web scraper, possibly in a Docker
-o	IT WILL CONNECT THE DATA WAREHOUSE
-o	Using a credentials file 
-o	INITIALIZE A TEMPORARY RAW DATA TABLE 
-o	It will search a letter in ESRB site
-o	Gather the 6 data points from each row
-o	TRY TO  PASS THOSE POINTS AS A ROW INTO THE TEMPORARY TABLE, EITHER ONE AT A TIME OR ADD THEM TO A STRING WITH THE PROPER SQL FORMATTING AND PASS THAT WHOLE BIG THING LATER.
-•	Working with at least 8 datasets, probably tons of overlap
-•	Need to do a number of transformations.
-o	Need to replace consoles in the middle of Interactive_Elements with ‘, ‘ [  \s\(.*\).*  and at the end with ‘.’
-o	Load the date reference files:
-	Try to standardize the console names in the Refrence tables
-	Try one hot encoding the  
-o	Use that to gather any release dates possible
-o	Need to combine the rows where everything is the same but console into one row with a list of all the consoles.
-•	Need to do pipeline transformations
-o	Build into the scraper script a LOADER with sqlalchemy:
-	A program which automatically connects to postgres
-	Using a credentials file 
-	Takes a scraped csv without downloading it (maybe generate a new one every 1000 rows)
-	Creates a postgres table out of it
-	Merges that table into a main table
-	Performs all of the transformations
-	Saves that main table 
-o	The final Postgres table will be put on Kaggle
-•	Additional Transformation DBT?
-o	Create a #consoles feature
-o	Create a #descriptors feature
-o	Separate the consoles into one-hot columns
-o	Separate the content descriptors into one-hot columns
-o	Create a filler date column:
-	See if the title has any year in it
-	If not, add an average date
-•	 make an average release date for a game on each console
-•	Add up all of the avg date release dates and divide by the # consoles
-	Or add a parametrized date:
-•	Find the range of when games where coming out for each console
-•	Find a year that is within the range of all the consoles
-•	Maybe take the median of the in range years
-•	Model the data in pandas 
-•	Hook it up to the existing Streamlit visualization  -->
-<!-- GridSearchCV and RandomizedSearchCV and DecisionTreeClassifier, RandomForestClassifier,HistGradientBoostingClassifier, XGBClassifier, GradientBoostingClassifier, LogisticRegression, GaussianNB -->
 
+  <h4> </h4>
   <ol>
     <li>Decide which relational database to use.
       <p class="bullet-answer"> I decided to use PostGreSQL because I have past experience with it, it's free, and it's widely used and supported</p>
     </li>
 
-    <li>Build a web scraper.
+    <li>Build a web scraper. <a href="https://github.com/AshKatzEm/SQLproject/blob/main/Pipeline/main.py" >main.py</a>
       <ul>
         <li>Connect to the website using Selenium.
           <p class="bullet-answer">I'm getting data from ESRB.com</p>
@@ -87,7 +44,7 @@ o	Create a filler date column:
         <li>Identify which package[s] we will use to connect a python scrip to a PostGres database.
           <p class="bullet-answer">I like the Psychopg2 package for it's simplicity and similiarity to SQL relational database querying</p>
         </li>
-        <li>Identify how to safely automate authentication and connection to the database.
+        <li>Identify how to safely automate authentication and connection to the database. <a href="https://github.com/AshKatzEm/SQLproject/blob/main/Pipeline/connect.py" >connect.py</a>
           <p class="bullet-answer">I used a credentials.ini file, as well as a couple of python helper functions, configuration.py and connect.py, to ensure that the process consistently runs smoothly</p>
         </li>
       </ul>
@@ -118,7 +75,7 @@ o	Create a filler date column:
       </li>
     </ul>
     </li>
-    <li>Do more-complicated data wrangling in pandas which I want to try.
+    <li>Do more-complicated data wrangling in pandas which I want to try.  <a href="https://github.com/AshKatzEm/SQLproject/blob/main/Notebooks/Post_pipeline_cleaning.ipynb">Post_pipeline_cleaning.ipynb</a> 
       <p class="bullet-answer"> There's now many rows missing data which couldn't be found in the ancillary tables</p>
       <ul>
         <li>Try to impute the 50% of the release_year which are Nan.
@@ -139,7 +96,7 @@ o	Create a filler date column:
         <li>Make little tweaks to allow various types of models to train on the data</li>
       </ul>
     </li>
-    <li>Decide what model to use with the dataset.</li>
+    <li>Decide what model to use with the dataset. <a href="https://github.com/AshKatzEm/SQLproject/blob/main/Notebooks/SQL_ESRB_Project.ipynb" > SQL_ESRB_Project.ipynb</a></li>
       <ul>
         <li>I decided to manually evaluate various different models in a ipynb notebook. This way I could get a more intuative sense of the variance and data format preferences of each of the various models and take advantage of the unique information that some models provided along with their predictions. </li>
         <li> I explored seven different models:
@@ -369,38 +326,53 @@ o	Create a filler date column:
       </ul>
     <li>A few questions remained:</li>
       <ul>
-        <li>None of these parameters seemed to increase performance. Furthur, in 24000 trainings, we never once acheived as high an accuracy as when we ran the defualt model. What parameters get us from where we are to where the defualt model is?</li>
-        <p class="bullet-answer">The first thing to note is that one, pretty much unparameterized decision tree almost exactly matched the RF performance. It's reasonable to think that a forest of decision trees would be similiarly unparameterized. Parameters are all just restrictions on the model. Letting the model go unrestricted on this data has been shown to be advantageous. It's hard to express exactly why unrestrained tree building works so well on this data but if you browse through the decision tree (Open Image In a New Tab), you get a bit of intuition. I didn't see leaves (conclusions) which I fel were overfit. The loss of accuracy emerged from very small scale contradiction in the data. For example, there are 17 games with these 7 features values, 15 of them are M, 2 of them are T. There's an 86.7% chance the game is M. Sometime, there's only one game which has a particular set of feature values. Why restrict that branch from being created? Any alternative guess would likely be less accurate.  </p>
+        <li>None of these parameters seemed to increase performance. Furthur, in 24000 trainings, we never once acheived as high an accuracy as when we ran the defualt model. What parameters get us from where we are to where the defualt model is?
+        <p class="bullet-answer">The first thing to note is that one, pretty much unparameterized decision tree almost exactly matched the RF performance. It's reasonable to think that a forest of decision trees would be similiarly unparameterized. Parameters are all just restrictions on the model. Letting the model go unrestricted on this data has been shown to be advantageous. It's hard to express exactly why unrestrained tree building works so well on this data but if you browse through the decision tree (Open Image In a New Tab), you get a bit of intuition. I didn't see leaves (conclusions) which I fel were overfit. The loss of accuracy emerged from very small scale contradiction in the data. For example, there are 17 games with these 7 features values, 15 of them are M, 2 of them are T. There's an 86.7% chance the game is M. Sometime, there's only one game which has a particular set of feature values. Why restrict that branch from being created? Any alternative guess would likely be less accurate.  
+         </p>
+        </li>
 
-        <li>How can the training accuracy of the model only 91% ? Has the model not mastered it's own data? </li>
-        <p class="bullet-answer">This question is actually pretty common and WAY UNDER ADDRESSED in my opinion. I found a few people asking about this online and I found even fewer people discussing it and or suggesting answers. From what I gathered, it's a very fundamental and important question with some very intuitive answers that I found eye-opening. Here's what I gathered:<br>
+        <li>How can the training accuracy of the model be only 91% ? Has the model not mastered it's own data?!
+        <p class="bullet-answer">This question is actually pretty common and WAY UNDER-ADDRESSED in my opinion. I found a few people asking about this online and I found even fewer people discussing it and or suggesting answers. From what I gathered, it's a very fundamental and important question with some very intuitive answers that I found eye-opening. Here's what I gathered:<br>
         The basic answer is that the model is not complex enough to perfectly memorize the patterns in the training set. Ok fine, how and why is that?<br>
-        Increasing the model's complexity, such as using more or deeper trees, could potentially improve the training accuracy, but it could also lead to overfitting. We found that decreasing the complexity by any amount seriously hurts the model, so more complexity would be the natural way to go. But maybe the model must have found that, at the very least, furthur complexity doesn't increase testing accuracy, let alone decrease it. A related reason, which I don't think is at play with our model, is that some models commonly have default and or set hyperparameters which attempt to prevent this very overfitting by intentionally causing the model to memorizing the data a little less, in one way or another. The most common example of this is model which "regularize" the data before training on it such as variants of OLS regression like Ridge regeression.
-        Another factor, which we touched on in the first question, is that there are numerous place in the data where, for example, you have 17 games with identical values for every feature, yet there's an 86.7% chance it's an M, and a 13.3% chance its a T. You feed that set of features into the model, no amount of training or familiarity with the data can allow you to increase your chances of guessing correctly.
+        Increasing the model's complexity, such as using more or deeper trees, could potentially improve the training accuracy, but it could also lead to overfitting. We found that decreasing the complexity by any amount seriously hurts the model, so more complexity would be the natural way to go. But maybe the model must have found that, at the very least, furthur complexity doesn't increase testing accuracy, let alone decrease it. A related reason, which I don't think is at play with our model, is that some models commonly have default and or set hyperparameters which attempt to prevent this very overfitting by intentionally causing the model to memorizing the data a little less, in one way or another. The most common example of this are models which "regularize" the data before training on it such as variants of OLS regression like Ridge regeression.
+        A 2nd reason for the lower training accuracy, which we touched on in the first question, is that there are numerous place in the data where, for example, you have 17 games with identical values for every feature, yet there's an 86.7% chance it's an M, and a 13.3% chance its a T. If you feed that set of features into the model, no amount of training or familiarity with the data can allow you to increase your chances of guessing correctly.
         </p>
+        </li>
 
-        <li> If the accuracy on training data is only 91%, how can we expect the testing score to increase anymore than 88% ?</li>
+        <li> If the accuracy on training data is only 91%, how can we expect the testing score to increase anymore than 88% ?
+          <p class="bullet-answer">
+            As the data and the model stands now, I don't think we can expect to gain more testing accuracy. In a not so scientific comparison, if our training accuracy was 100%, then our testing accuracy would be ~97%, which is pretty good I think. I think the primary reason we aren't able to improve our accuracy is mostly because of fundamental limitations in ESRB discriptor data. When we model real phenomena, we often think the goal is to predict the behavior of that phenomena. The other side of that goal, which is just as important, is finding what we can't precisly predict. Subjectively assigned content descriptors and a release year will only get us so far. Our model has shown us pretty definitively how far that is. There is a strong element of subjectivity which ultimately decides ratings those on the fence games. I believe that we can improve our general ESRB rating prediction accuracy by trying to tap into a bit more of that subjectivity than we already have.
+
+          </p>
+        </li>
       </ul>
-    
+      <li>Where to improve?</li>
+        <ul>
+          <li>Better release dates:
+            <p class="bullet-answer">
+              If you remember, I imputed half of the ~46,000 release years using information about the consoles the game was ported to. Of that half, approximately 15.8% were Windows-only games, which means they came out sometime between 1986 and 2024. There is nothing to learn from that range. A further 10% were other 'computer games' with giant unhelpful ranges. So we got over 25% of the imputations, ~12.9% of the overall dataset, were unhelpful. Yet, the MDI-based feature importance provided by the model always ranked release_year as the most important feature in the tree. Gathering more accurate release dates for, at least that 12.9%, if not the whole imputed 50%, could easily improve the testing accuracy of the model. Furthur, it will definitively increase the insightfulness of the dataset.
+            </p>
+          </li>
+          <li>Featurize the content summary and interactive elements
+            <p class="bullet-answer">
+               If you asked the ESRB person why they gave a game a T when they gave the other 17 games with the exact same feature values an M, they would probably say something like " ya, it had the same content descriptors but this game had less of it and the content was less inapporiate as well." Luckily, they provide a large amount of that explanation data and ~45% of our dataset includes it. The problem is that I'm not at the point where I could featurize it. But even a tiny investment in this arae can yeild improvement. A simple example, we have two games: The Dark Crystal: Age of Resistance Tactics AND Hyrule Warriors: Age of Calamity. Both have same single descriptor, Fantasy Violence, and both came out in 2020. Dark Crystal got an E10+ rating and Hyrule got a T. We say that the vast majority of the only Fantasy Violence games from 2020 got an E10+ and predict based on that. However, we can further say that Hyrule has a content summary and many of the E10+ games, do not, becuase the rater felt there's nothing to note. I try this soon. 
+            </p>
+          </li>
+
+        </ul>
+  
 
 
     <li>Hook the new model up to streamlit</li>
+I revamped the old streamlit to explore my new dataset. It's actually pretty helpful now and I've been using it to explore the dataset, as streamlit did a great job with their dataset interface.
+    <iframe class="streamlit" src="https://sqlproject-2as5kapbpic5kicy56dj4f.streamlit.app/?embed=true"></iframe>
 
-    <li>Where to improve?
-      <ul>
-        <li>Better release dates</li>
-        <li>Featurize the content summary and interactive elements</li>
-        The last 12% accuracy is because of the probabilty events at some of the leaves on the tree, 9 games with these features go T, 1 game with these features goes M. If you got more specific about what exactly happens in the game that makes it an M, you would probably be able to gain some additional accuracy. 
-      </ul>
-
-    </li>
   </ol>
 
 
 
 
 
-    <iframe class="streamlit" src="https://sqlproject-2as5kapbpic5kicy56dj4f.streamlit.app/?embed=true"></iframe>
 
   
 
