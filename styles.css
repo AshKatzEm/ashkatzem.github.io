@@ -7,6 +7,14 @@ h1,h2,h3{
   max-width: 900px;
 }
 
+div.author-name {
+  text-indent: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  max-width: 900px;
+}
+
 
 .paragraph { 
    text-indent: 30px;

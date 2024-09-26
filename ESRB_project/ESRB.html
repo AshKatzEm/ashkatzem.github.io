@@ -16,7 +16,7 @@
 
 <body class="esrb">
   <p class="Introduction paragraph">
-    In this project, me and two others from the CUNY Tech Prep fellowship built a model which predicts the ESRB rating of a video game based on what content descriptors it has. Further we created a nice Streamlit application to allow visiters to explore the model and the dataset.
+    In this project, me and two others from the CUNY Tech Prep fellowship built a model which predicts the ESRB rating of a video game based on what content descriptors it has. We obtained our dataset from Kaggle and it contained ~2300 rows of data. Further we created a nice Streamlit application to allow visiters to explore the model and the dataset. In our bottom line, we were able to predict the ESRB rating of a video game 84~86% accurately using a Random Forest model. Subsequently, it became apparent to me that the model was losing predictive performance because of the lack of date for the games. Violence meant more in 1996 then it did in 2022. I managed to scrape release years for 80% of the data and with that feature, I was able to slightly increase performance. Nevertheless, the variance of the model was somewhat problematic, the dataset wasn't particularly insightful and it's likely that the model wouldn't generalize well in the real world on unseen data.
   </p>
   <label> Here is a slide presentation we gave explaining the project.
     <embed src="Images/ESRB_data_slides.pdf" width="75%" height="450px" 
