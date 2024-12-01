@@ -18,10 +18,25 @@ div.author-name {
 
 .paragraph { 
    text-indent: 30px;
-   margin-left: auto;
+   margin-left: 15%;
    margin-right: auto;
    display: block;
    max-width: 900px;
+}
+.bullet-number{
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-left: 15%;
+  list-style-position: inside;
+  max-width: 900px;
+}
+
+.number-subpoints{
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+  list-style-position: inside;
+  max-width: 900px;
 }
 
 .relevent-screenshot {
@@ -173,6 +188,7 @@ Making it wider didn't work */
 .bullet-answer {
   margin-top: 5px;
   margin-bottom: 10px;
+  margin-left:15px;
   display: block;
   max-width: 600px;
   text-align: left;
@@ -218,7 +234,6 @@ Making it wider didn't work */
   width: 100%;
 }
 
-/* On screens that are 992px or less, set the background color to blue */
 @media screen and (max-width: 992px) {
   .container2 {
     width:100%;
@@ -247,23 +262,27 @@ Making it wider didn't work */
 
 @media screen and (min-width: 993px) {
 .container2 {
-  width:100%;
-  display: flex;
+  /* display:flex; */
+  /* object-fit: contain; */
   margin-top: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 30px; 
+  border-style: solid;
+  border-color: black;
+  border-width: 3px;
+  margin-left: -30%;
+  width: 150%;
+  column-count: 2;
 }
 
 .left figure{
   padding: 0;
   margin: 0;
-  width:625px;
 
 }
 
 
 .right figure{
   padding:0;
-  width: 625px;
   margin: 0;
 
 }
@@ -286,4 +305,11 @@ figcaption #tree {
 
 h4 {
   text-align: center;
+  padding-bottom: -20px;
+  margin-bottom: -20px;
+}
+
+.full-width-image{ 
+  margin-left: -30%;
+  width: 200%;
 }
