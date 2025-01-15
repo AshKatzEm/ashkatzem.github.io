@@ -15,6 +15,21 @@ div.author-name {
   max-width: 75vw;
 }
 
+.homepage{
+  display: flex;
+}
+
+.right-home {
+  flex: 50%;
+}
+
+.left-home {
+  flex: 50%;
+}
+
+.logo {
+  height:40px;
+}
 
 .paragraph { 
    text-indent: 30px;
