@@ -20,15 +20,32 @@ div.author-name {
 }
 
 .right-home {
-  flex: 50%;
+  flex: 75%;
 }
 
 .left-home {
-  flex: 50%;
+  flex: 25%;
+  justify-content: center;
 }
 
-.logo {
+/* .link {
   height:40px;
+} */
+
+.logo {
+  height: 120px;
+  width: 120px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.introduction {
+  text-indent: 30px;
+}
+
+.body-paragraph {
+  text-indent: 30px;
 }
 
 .paragraph { 
