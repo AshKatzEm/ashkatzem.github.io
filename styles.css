@@ -427,3 +427,36 @@ h4 {
   margin-top: 10px;
 
 }
+
+.picture-background-list {
+  display: block;
+  text-align: center;
+  font-size: x-large;
+  background-color: lightgrey;
+
+}
+
+.picture-background {
+  padding: 3%;
+}
+
+#property.picture-background {
+  background-color: plum;
+}
+
+#esrb.picture-background {
+  background-color: lightgoldenrodyellow;
+}
+
+
+#classroom.picture-background {
+  background-color: lightblue;
+}
+
+#pipeline.picture-background {
+  background-color: lightcoral;
+}
+
+#weather.picture-background {
+  background-color: lightgreen;
+}
