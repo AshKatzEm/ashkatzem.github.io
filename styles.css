@@ -400,12 +400,16 @@ h4 {
 
 .logo-row {
   display:flex;
-  float: center;
-  justify-content: center;
+  justify-content:space-evenly;
+  height: 300px;
+}
+
+.logo-row img {
+  height: 110%;
 }
 
 .ordinary-image{
-  padding-top: 40px;
+  padding-top: 2%;
   display:block;
   text-align: center;
   background-color: lightblue;
