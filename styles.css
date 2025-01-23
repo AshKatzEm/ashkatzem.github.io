@@ -19,18 +19,54 @@ div.author-name {
   display: flex;
 }
 
-.right-home {
-  flex: 75%;
+
+ /* The sidebar menu */
+ .left-home {
+  flex: 25%;
+  justify-content: center;
+  width: 160px; /* Set the width of the sidebar */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
 }
 
-.left-home {
+/* The navigation menu links */
+.left-home a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.left-home a:hover {
+  color: #f1f1f1;
+}
+
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .left-home {padding-top: 15px;}
+  .left-home a {font-size: 18px;}
+} 
+
+
+.center-home {
+  flex: 50%;
+}
+
+.right-home {
   flex: 25%;
   justify-content: center;
 }
 
-/* .link {
-  height:40px;
-} */
+#inline{
+  display:flex;
+} 
+
+.text , .variable {
+  margin:10px;
+}
 
 .logo {
   height: 120px;
@@ -354,3 +390,36 @@ h4 {
   margin-bottom: -20px;
 }
 
+.document {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 850px;
+  height: 1200px;
+}
+
+.logo-row {
+  display:flex;
+  float: center;
+  justify-content: center;
+}
+
+.ordinary-image{
+  padding-top: 40px;
+  display:block;
+  text-align: center;
+  background-color: lightblue;
+}
+
+.ordinary-image img{
+  justify-self:center;
+  width: 75%;
+}
+
+.ordinary-image figcaption{
+  font-size: x-large;
+  float: center;
+  justify-content: center;
+  margin-top: 10px;
+
+}
