@@ -25,7 +25,7 @@ div.author-name {
   flex: 25%;
   justify-content: center;
   width: 160px; /* Set the width of the sidebar */
-  overflow-x: hidden; /* Disable horizontal scroll */
+  /* overflow-x: hidden; Disable horizontal scroll */
   padding-top: 20px;
 }
 
