@@ -428,35 +428,92 @@ h4 {
 
 }
 
+#projects{
+  padding-top: 3%;
+  padding-bottom: 3%;
+  display: flex;
+  justify-content: center;
+}
+
 .picture-background-list {
   display: block;
   text-align: center;
-  font-size: x-large;
-  background-color: lightgrey;
-
+  justify-content: center;
+  font-size:x-large;
+  width: 90%;
 }
 
 .picture-background {
-  padding: 3%;
+  padding-bottom:10%;
+  padding-top: 10% ;
+}
+
+.picture-background a {
+  text-decoration: none;
+  text-shadow: #000;
+  color: black;
+}
+
+
+
+.text-background {
+  background-color: rgba(255,255,255,0.8);
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
+#esrb  .text-background {
+  background-color: rgba(216, 139, 252, 0.9);
+  margin-right: 20%;
+  margin-left: 20%;
+}
+
+#pipeline  .text-background{
+  background-color: rgba(216, 139, 252, 0.9);
+  margin-right: 10%;
+  margin-left: 10%;
 }
 
 #property.picture-background {
+  background-image: url("Projects/Images/queens-b1.jpg");
+  background-position: center; /* Center the image */
+  background-repeat:no-repeat; /* Do not repeat the image */
+  background-size:cover; /* Resize the background image to cover the entire container */
   background-color: plum;
 }
 
 #esrb.picture-background {
-  background-color: lightgoldenrodyellow;
+  background-image: url("Projects/Images/ESRB_ratings.svg.png");
+  background-position: center; /* Center the image */
+  background-repeat: repeat; /* Do not repeat the image */
+  background-size:contain; /* Resize the background image to cover the entire container */
+  background-color: white; /* Used if the image is unavailable */
 }
 
 
 #classroom.picture-background {
-  background-color: lightblue;
+  background-image: url("Projects/Images/labels.png"), url("Projects/Images/pie.png"),url("Projects/Images/whitetohat.png"), url("Projects/Images/studentPerformance.png");
+  background-position:0%,29%,69.5%,100%;
+  background-repeat: no-repeat;
+  background-size:contain, contain, contain, contain;
 }
 
+
+
+
+
 #pipeline.picture-background {
-  background-color: lightcoral;
+  background-image: url("Projects/Images/ESRB_ratings.svg.png");
+  background-position: center; /* Center the image */
+  background-repeat: repeat; /* Do not repeat the image */
+  background-size:contain; /* Resize the background image to cover the entire container */
+  background-color: lightgreen;
 }
 
 #weather.picture-background {
+  background-image: url("Projects/Images/weatherIcons.png");
+  background-position: center; /* Center the image */
+  background-repeat: repeat; /* Do not repeat the image */
+  background-size:contain; /* Resize the background image to cover the entire container */
   background-color: lightgreen;
 }
