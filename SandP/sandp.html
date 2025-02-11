@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S&P</title>
+  <link href="../styles.css" rel="stylesheet">
+</head>
+
+<h1> Fully Deployed Live S&P 500 Pipeline</h1>
+
+<body>
+    I'm currently building the data sources for an pipeline that will collect at least Symbol, Time, Trade Volume, Current price, Day Change, Percent change, High price of the day, Low price of the day, Open price of the day, and Previous close price for every company in the S&P 500, likely every 10 minutes. I'm thinking of using https://finnhub.io as it seems to give me the data I want for free at the rates I want. I may add some further data extraction when I get that up and running. I'm estimating that I will be collecting at least 400K rows a month and I will be trying to use PySpark throughout to speed up the pipeline, and certainly in the visualizing and modeling phase. I would also like to have the pipeline automatically connected to a ML/DL platform like Sagemaker and a BI platform like Tableau, as I think a good pipline should have multiple tranformation paths for different endpoints.
+</body>
+</html>
