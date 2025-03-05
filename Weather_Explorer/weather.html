@@ -9,174 +9,78 @@
 
 <h1> Fully Deployed Live Weather Data Explorer Application</h1>
 <h2>Winter project 2024-2025 </h2>
-</h3>
 
 <body>
-  <ul>
+  <p class="Introduction paragraph">
+    In all my previous projects, I was either using a dataset that someone else made, or I harvested my own dataset. In both cases, everything was static when it came to modeling with the data. For my next project, I really wanted to try using a much more CI/CD approach where I get a data pipeline up and running, try to keep the data flowing, and try to build a model based on the continually growing data. There were a number of very new elements to this project that I had never worked with before so I wanted to simplify things where-ever possible. This project is technically still ongoing, and hopefully will continue for years to come, but I felt that I made it over most of the hurdles, so now is as good a time as any to make a write up. Overall, I accomplished the following goals:
+    <ul class="Introduction paragraph">
+      <li>I found a simple source of constantly generated, live, free, and easily accessible data</li>
+      <li>I built an Apache Airflow DAG which gathers the latest data from the source, transforms it, and moves it to a database</li>
+      <li>I set up an Amazon Relational Database Service PostgreSQL database to receive the data</li>
+      <li>I set up a Flask app to allow anyone to explore and visualize the growing with an internet connection</li>
+      <li>I set up an AWS t2.small EC2 instance and was able to deploy the DAG so that it was running constantly</li>
+      <li>When the EC2 started to have performance issues, I set a local server with more computing power for free and was able to deploy the DAG there.</li>
+      <li>I built a script which automatically moniters the health of Apache Airflow, gathers situational data when an error occurs and tries to resolve the issues.</li>
+      <li>I haven't started with the modeling component but it will be part of the Flask app, and it will probably be boring becuase of the subect of my data as well as the patchyness of my data as airflow will sometimes misbehave unexpectedly and it took me while to figure out how to even moniter this behavior, let alone try to prevent it or automatically make corrections.    </li>
+    </ul>
+  </p>
+
+  <h3> In more detail:</h3>
+  <ol>
+      <li class="bullet-number">I decided to use weather data for my location because it was free and easily accessible through many easy to use API's and there's always new weather coming out. </li>
+
       <li class="bullet-number">
-        I Built an ETL pipeline using an Airflow dag deployed to an t2.small EC2 instance. The DAG has 3 tasks, Extract, Transform, and Load. 
+        Using Apache Airflow in a local environment, I build a dag which:
         <ol>
-          <li class="number-subpoints">Extract: Extract a JSON file of weather data for Plainview, NY using the openweather API, every 10 minutes.</li>
-          <li class="number-subpoints">Transform: Drop the sections of the JSON file which are unwanted and transform the timestamp from EPOCH UNIX to a more readable format</li>
-          <li class="number-subpoints">Load: Load the transformed data into an AWS RDS-hosted PostgreSQL database.</li>
+          <li class="number-subpoints"> Extract a JSON file of weather data for Plainview, NY using the openweather API, every 10 minutes.</li>
+          <li class="number-subpoints">Drops sections of the JSON file which are unwanted and transform the timestamp from EPOCH UNIX to a more readable format, among other transformations</li>
+          <li class="number-subpoints">Loads the transformed data into an PostgreSQL database.</li>
         </ol>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.61.0/lib/codemirror.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/codemirror@5.61.0/addon/runmode/runmode-standalone.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/codemirror@5.61.0/mode/python/python.min.js"></script>
-      </head>
-      <body>
-        <pre>If you wait a bit, this code gets colorized<code id="python_code">
-          from airflow.decorators import dag, task
-          from airflow.models import Variable
-          from pendulum import datetime
-          from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
-          import time
-          import requests
-          import os
-          
-          key = Variable.get("API_KEY")
-          # request_url = f'http://api.openweathermap.org/data/2.5/weather?appid={os.getenv("API_KEY")}&q=Plainview,NY,US&units=imperial'
-          request_url = f'http://api.openweathermap.org/data/2.5/weather?appid={key}&q=Plainview,NY,US&units=imperial'
-          
-          
-          
-          @dag(
-              start_date = datetime(2024,12,10),
-              schedule="*/10 * * * *",
-              # schedule="@daily",
-              tags=['Weather'],
-              catchup=False,
-          )
-          
-          def find_weather():
-          
-              @task
-              def extract_weather():
-                  weather_data = requests.get(request_url).json()
-                  return weather_data
-              
-          
-              @task
-              def transform_weather(weather_data):
-                  transformed_weather = {'weather': weather_data["weather"][0]["main"],
-                                          'description': weather_data["weather"][0]["description"],
-                                          'temp': weather_data['main']['temp'],
-                                          'feels_like':weather_data['main']['feels_like'],
-                                          'temp_min':weather_data['main']['temp_min'],
-                                          'temp_max':weather_data['main']['temp_max'],
-                                          'humidity':weather_data['main']['humidity'],
-                                          'wind_speed':weather_data['wind']['speed'],
-                                          'wind_deg':weather_data['wind']['deg'],
-                                          'timestamp':time.strftime('%Y-%m-%d %H:%M:%S',time.gmtime(weather_data['dt'])),
-                                          'sunrise': time.strftime('%Y-%m-%d %H:%M:%S',time.gmtime(weather_data['sys']['sunrise'])),
-                                          'sunset': time.strftime('%Y-%m-%d %H:%M:%S',time.gmtime(weather_data['sys']['sunset']))
-                                          }
-                  return transformed_weather
-              
-              extract = extract_weather()
-              transform = transform_weather(extract)
-          
-              weather_table = SQLExecuteQueryOperator(
-                  conn_id='weather-db',
-                  task_id = 'build_weather_table',
-                  sql = 'sql/clq.sql',
-                  parameters=transform,
-                  split_statements=True,
-                  return_last=True,
-                  autocommit=True
-                  )
-              
-              weather_table
-          
-          find_weather()</code></pre>
-        <script type="text/javascript">
-            window.onload = function(){
-                var codeElement = document.getElementById('python_code');
-                // Add code mirror class for coloring (default is the theme)
-                codeElement.classList.add( 'cm-s-default' );
-                var code = codeElement.innerText;
-    
-                codeElement.innerHTML = "";
-    
-                CodeMirror.runMode(
-                  code,
-                  'python',
-                  codeElement
-                );
-            };
-        </script>
-<!--         
-        <code class="bullet-answer">
-          from airflow.decorators import dag, task <br>
-          from pendulum import datetime<br>
-          from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator<br>
-          import time<br>
-          import pandas as pd<br>
-          import requests<br>
-          import os<br>
-      
-          request_url = f'http://api.openweathermap.org/data/2.5/weather?appid={os.getenv("API_KEY")}&q=Plainview,NY,US&units=imperial'<br>
-      
-      
-          @dag(<br>
-          &ensp;&ensp;start_date = datetime(2024,12,10),<br>
-          &ensp;&ensp;schedule="*/10 * * * *",<br>
-          &ensp;&ensp;tags=['Weather'],<br>
-          &ensp;&ensp;catchup=False,<br>
-          )<br>
-      
-          def find_weather():<br>
-          
-          &ensp;&ensp;@task<br>
-          &ensp;&ensp;def extract_weather():<br>
-          &ensp;&ensp;&ensp;&ensp;weather_data = requests.get(request_url).json()<br>
-          &ensp;&ensp;&ensp;&ensp;return weather_data<br>
-              
-      
-          &ensp;&ensp;@task<br>
-          &ensp;&ensp;def transform_weather(weather_data):<br>
-          &ensp;&ensp;&ensp;&ensp;transformed_weather = {'weather': weather_data["weather"][0]["main"],<br>
-          &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;'description': weather_data["weather"][0]["description"],<br>
-          &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;'temp': weather_data['main']['temp'],<br>
-          &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;'feels_like':weather_data['main']['feels_like'],<br>
-          &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;'temp_min':weather_data['main']['temp_min'],<br>
-          &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;'temp_max':weather_data['main']['temp_max'],<br>
-          &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;'humidity':weather_data['main']['humidity'],<br>
-          &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;'wind_speed':weather_data['wind']['speed'],<br>
-          &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;'wind_deg':weather_data['wind']['deg'],<br>
-          &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;'timestamp':time.strftime('%Y-%m-%d %H:%M:%S',time.gmtime(weather_data['dt']))<br>
-          &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;}<br>
-          &ensp;&ensp;&ensp;&ensp;return transformed_weather<br>
-              
-          &ensp;&ensp;extract = extract_weather()<br>
-          &ensp;&ensp;transform = transform_weather(extract)<br>
-      
-          &ensp;&ensp;weather_table = SQLExecuteQueryOperator(<br>
-          &ensp;&ensp;&ensp;&ensp;conn_id='weatherdb',<br>
-          &ensp;&ensp;&ensp;&ensp;task_id = 'build_weather_table',<br>
-          &ensp;&ensp;&ensp;&ensp;sql = 'sql/clq.sql',<br>
-          &ensp;&ensp;&ensp;&ensp;parameters=transform,<br>
-          &ensp;&ensp;&ensp;&ensp;split_statements=True,<br>
-          &ensp;&ensp;&ensp;&ensp;return_last=True,<br>
-          &ensp;&ensp;&ensp;&ensp;autocommit=True<br>
-          &ensp;&ensp;)<br>
-              
-          &ensp;&ensp;weather_table<br>
-      
-          find_weather()<br>
-        </code> -->
-      <img class="full-width-image" src="Images/Dag_graph@2024-12-19_3.31.57 PM.png" alt="An early graph of the dage performance">
       </li>
 
-      <li class="bullet-number">Here is a rudimentary <a href="https://weather-dashboard-1k0w.onrender.com" title="Data Explorer"  target="_blank" rel="noreferrer noopener">data explorer</a> which allows you to scroll through the data in the database. It was built using Flask. It's hosted for free on Render, so it spins down with inactivity. If you don't immediately see it in the box below, be patient or click on the link, it can take as much as 60 seconds to spin up. Functionality will be continually added
+      <li class="bullet-number">
+        I set up a hosted Amazon Relational Database Service (RDS) PostGreSQL database to always be online to receive the weather data
+      </li>
+
+
+      <li class="bullet-number">
+        I deployed the Airflow dag on a t2.small EC2 instance and set it to run the scheduler and triggerer in the background without a SSL hangup. 
+        <p class="bullet-answer">This worked for 26 days until I realized airflow crashed unexpectedly after 3 days prior. I don't have the specific error recorded but it had something to do with memory running out. After studying it for a day, I diagnosed that it did indeed crash from hardware constaints. So I could either pay for a more expensive instance size or find an alternative with more memory. The t2.small was already costing me more than I anticipated, at least ¢62 a day.</p>
+      </li>
+      <li class="bullet-number"> The DAG itself has worked flawlessly throughout. It's always underlying issues which cause the data to stop flowing. I have SMTP notifactions set up in case there ever is an error. Here is a Graph of the DAG performance:
+        <img class="full-width-image" src="Images/Dag_graph@2024-12-19_3.31.57 PM.png" alt="An early graph of the DAG performance">
+      </li>
+
+      <li class="bullet-number" >
+        I had a number of old pc's lying around, which despite their age, had far better specs than a t2.small. I decided I was going to wipe one and try to set it up as an Ubuntu server. It worked with flying colors and I had it set up and running the pipeline in 3 hours. This worked for 30 days until I realized that the postgres database shutdown unexpectedly after 18 days and it didn't come back online until after airflow had given up on reaching it. I did a thorough check of the RDS PostGreSQL database configurations and permissions and I made some tweeks. I ran the pipeline again and soon the same error occured. At this point, I came to believe that it was actually the airflow backend postgres database which which was unexpectedly shutting down and causeing problems. I did a bunch of studying the backend, making sure it wasn't a <a href="performance.html" target="_self" rel="nofollow" class="projects">memory or hardware issue</a>, made sure I set up the backend DB correctly and restarted the pipeline. The same error happened a few days later. It was at this point that I really started to focus on this issue. Some key details:
+        <ul>
+          <li>the actual error was: psycopg2.OperationalError: connection to server at "localhost" (127.0.0.1), port 5432 failed: FATAL:  the database system is shutting down</li>
+          <li>I really scoured the internet for answers on why this was happening but this error is too generic to be helpful</li>
+          <li>As far as I can tell, it is an issue with the airflow backend database shutting down and airflow being unable to reach the database while it booting up</li>
+          <li>everything works fine with the database when I test or run airflow, so I had no way of preventing or at least simulating the error. </li>
+          <li>I spent many hours writing a stack exchange question which detailed all the build and evironment details of my server which I could think of and what was occuring and when but it was quickly taken down and penalized for being too generic. I definitely could have refined it but I was a bit grumpy at stack exchange at that point, I was back to trying to figure it out on my own.</li>
+          <li>I decided that I NEEDED to get some kind of monitering of airflow set up if I was going to understand the issue, let alone solve it. I had looked into this numerous time in the past but the solutions I found were difficult to implement and or expensive.</li>
+          <li> I decided the best place to start would be to write a simple Bash program to run airflow and watch it as it's running. If something notable happens, it will report via email any environment details which I could imagine might be relevant. It will also try some solutions to get airflow back up and running. This way, if an error occurs, I will know immediately, will have some info about the system, and if my diagnosis was correct, it will probably be able to restart the backend database without shutting down the flow of data. If it doesn't, I will at least know it's not what I thought and I will hopefully be able to see from the environment details and logs what it actually is. </li>
+        </ul>
+      </li>
+
+      <li class="bullet-number">Here is a rudimentary <a href="https://weather-dashboard-1k0w.onrender.com" title="Data Explorer"  target="_blank" rel="noreferrer noopener">data explorer</a> which allows you to scroll through the data in the database. It was built using Flask. It's hosted for free on Render, so it spins down with inactivity. If you don't immediately see it in the box below, be patient or click on the link, it can take as much as 60 seconds to spin up. Functionality will be continually added.
         <iframe class="streamlit" src="https://weather-dashboard-1k0w.onrender.com"></iframe>
       </li>
       <li class="bullet-number">Here is a small <a href="https://plotly-dash-32gd.onrender.com" title="Dashboard" target="_blank" rel="noreferrer noopener" >dashboard</a> which I found interesting. It was built using Plotly Dash and it's hosted for free on Render, so it spins down with inactivity. If you don't immediately see it in the box below, be patient or click on the link, it can take as much as 60 seconds to spin up. Improvements to this dashboard will hopefully automatically deploy from github as I come out with them.
         <iframe class="streamlit" src="https://plotly-dash-32gd.onrender.com"></iframe>
       </li>
-      
-    </ul>
+
+      <li class="bullet-number">
+        I hope to add some kind of weather predictor, not becuase it will be accurate but more to experiment with continually training a model on new data while it's deployed.
+
+      </li>
+
+    </ol>
+      <!-- Bottom of the page last updated display -->
+      <div id="inline"> 
+        <div class="text"><pre>Last Updated: </pre></div> 
+        <div class="variable"><pre id="message">Loading</pre></div> 
+      </div> 
+    
 </body>
-
-</html>
-
