@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^cd '/Users/asherkatz/Library/CloudStorage/GoogleDrive-asher\\.katz3@gmail\\.com/My Drive/ashkatzem\\.github\\.io/hebrew/tests' && node run_tests\\.js$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

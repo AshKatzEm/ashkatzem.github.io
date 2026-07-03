@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weather Explorer</title>
   <link href="../styles.css" rel="stylesheet">
+  
 </head>
 
-<h1> Fully Deployed Live Weather Data Explorer Application</h1>
-<h2>Winter project 2024-2025 </h2>
-
 <body>
+  <h1> Fully Deployed Live Weather Data Explorer Application</h1>
+  <h2>Winter project 2024-2025 </h2>
+
   <p class="Introduction paragraph">
     In all my previous projects, I was either using a dataset that someone else made, or I harvested my own dataset. In both cases, everything was static when it came to modeling with the data. For my next project, I really wanted to try using a much more CI/CD approach where I get a data pipeline up and running, try to keep the data flowing, and try to build a model based on the continually growing data. There were a number of very new elements to this project that I had never worked with before so I wanted to simplify things where-ever possible. This project is technically still ongoing, and hopefully will continue for years to come, but I felt that I made it over most of the hurdles, so now is as good a time as any to make a write up. Overall, I accomplished the following goals:
     <ul class="Introduction paragraph">
@@ -48,7 +49,7 @@
         <p class="bullet-answer">This worked for 26 days until I realized airflow crashed unexpectedly after 3 days prior. I don't have the specific error recorded but it had something to do with memory running out. After studying it for a day, I diagnosed that it did indeed crash from hardware constaints. So I could either pay for a more expensive instance size or find an alternative with more memory. The t2.small was already costing me more than I anticipated, at least ¢62 a day.</p>
       </li>
       <li class="bullet-number"> The DAG itself has worked flawlessly throughout. It's always underlying issues which cause the data to stop flowing. I have SMTP notifactions set up in case there ever is an error. Here is a Graph of the DAG performance:
-        <img class="full-width-image" src="Images/Dag_graph@2024-12-19_3.31.57 PM.png" alt="An early graph of the DAG performance">
+        <img class="full-width-image" src="Images/Dag_graph@2024-12-19_3.31.57 PM.png" alt="An early graph of the DAG performance">
       </li>
 
       <li class="bullet-number" >
@@ -64,23 +65,133 @@
         </ul>
       </li>
 
-      <li class="bullet-number">Here is a rudimentary <a href="https://weather-dashboard-1k0w.onrender.com" title="Data Explorer"  target="_blank" rel="noreferrer noopener">data explorer</a> which allows you to scroll through the data in the database. It was built using Flask. It's hosted for free on Render, so it spins down with inactivity. If you don't immediately see it in the box below, be patient or click on the link, it can take as much as 60 seconds to spin up. Functionality will be continually added.
+      <li class="bullet-number">Here was a rudimentary <a href="https://weather-dashboard-1k0w.onrender.com" title="Data Explorer"  target="_blank" rel="noreferrer noopener">data explorer</a> which allowed you to scroll through the data in the database. It was built using Flask. It was hosted for free on Render, so it would spin down with inactivity. Unfortunately, the server in the US is having issues and I can't resolve remotely them from Israel so these web apps are not working at the moment. At the bottom of the page, you can see a screenshot of the data explorer before the issues occured.
         <iframe class="streamlit" src="https://weather-dashboard-1k0w.onrender.com"></iframe>
       </li>
-      <li class="bullet-number">Here is a small <a href="https://plotly-dash-32gd.onrender.com" title="Dashboard" target="_blank" rel="noreferrer noopener" >dashboard</a> which I found interesting. It was built using Plotly Dash and it's hosted for free on Render, so it spins down with inactivity. If you don't immediately see it in the box below, be patient or click on the link, it can take as much as 60 seconds to spin up. Improvements to this dashboard will hopefully automatically deploy from github as I come out with them.
+      <li class="bullet-number">Here was a small <a href="https://plotly-dash-32gd.onrender.com" title="Dashboard" target="_blank" rel="noreferrer noopener" >dashboard</a> which I found interesting. It was built using Plotly Dash and it was also hosted for free on Render. Unfortunately, the server in the US is having issues and I can't resolve remotely them from Israel so these web apps are not working at the moment. At the bottom of the page, you can see a screenshot of the data explorer before the issues occured.
         <iframe class="streamlit" src="https://plotly-dash-32gd.onrender.com"></iframe>
       </li>
+<li class="bullet-number">
+        <strong>Here are some screenshots of the interactive dashboard before the issues occurred</strong>
+        
+        <!-- The Gallery Grid -->
+        <div class="project-gallery">
+          <div class="gallery-item" onclick="openModal(this)">
+            <img src="Images/tempThroughoutTheDay30.png" alt="Airflow UI Dashboard">
+            <div class="gallery-caption">This is a view of the default display, 30 days</div>
+          </div>
+          <div class="gallery-item" onclick="openModal(this)">
+            <img src="Images/tempThroughoutTheDay30_2.png" alt="AWS RDS Instance Setup">
+            <div class="gallery-caption">This is a view of the default display, 30 days</div>
+          </div>
+          <div class="gallery-item" onclick="openModal(this)">
+            <img src="Images/ten_months.png" alt="Ubuntu Server Terminal Setup">
+            <div class="gallery-caption">This is a view of 10 months of everything (mostly) working.</div>
+          </div>
+          <div class="gallery-item" onclick="openModal(this)">
+            <img src="Images/longestStrech.png" alt="Flask Data Explorer View">
+            <div class="gallery-caption">This is a view of the longest stretch without an outage.</div>
+          </div>
+          <div class="gallery-item" onclick="openModal(this)">
+            <img src="Images/recentWeather.png" alt="Plotly Dash Performance Graph">
+            <div class="gallery-caption">This is a view of some of the most recent weather.</div>
+          </div>
+        </div>
 
-      <li class="bullet-number">
-        I hope to add some kind of weather predictor, not becuase it will be accurate but more to experiment with continually training a model on new data while it's deployed.
+        <!-- The Pop-up Modal (Hidden by default) -->
+        <div id="galleryModal" class="modal-backdrop" onclick="closeModal()">
+          <span class="modal-close">&times;</span>
+          <div class="modal-content-wrapper" onclick="event.stopPropagation()">
+            <img id="modalImage" src="" alt="">
+            <div id="modalCaption"></div>
+          </div>
+        </div>
 
+        <!-- Light JavaScript Control -->
+        <script>
+          function openModal(element) {
+            var imgSrc = element.getElementsByTagName('img')[0].src;
+            var imgAlt = element.getElementsByTagName('img')[0].alt;
+            var captionText = element.getElementsByClassName('gallery-caption')[0].innerHTML;
+            
+            document.getElementById('modalImage').src = imgSrc;
+            document.getElementById('modalImage').alt = imgAlt;
+            document.getElementById('modalCaption').innerHTML = captionText;
+            document.getElementById('galleryModal').classList.add('active');
+          }
+
+          function closeModal() {
+            document.getElementById('galleryModal').classList.remove('active');
+          }
+        </script>
       </li>
-
     </ol>
-      <!-- Bottom of the page last updated display -->
-      <div id="inline"> 
-        <div class="text"><pre>Last Updated: </pre></div> 
-        <div class="variable"><pre id="message">Loading</pre></div> 
-      </div> 
+<!-- Bottom of the page last updated display -->
+<div id="inline"> 
+  <div class="text"><pre>Last Updated: </pre></div> 
+  <div class="variable"><pre id="message">Loading...</pre></div> 
+</div> 
+
+<script>
+  (function() {
+    // 1. Identify the repo details
+    const owner = "AshKatzEm";
+    const repo = "ashkatzem.github.io";
     
+    // 2. Determine the path to the current file relative to the repo root
+    let path = window.location.pathname;
+    
+    // Clean up paths for GitHub's API matching
+    if (path === "/" || path.endsWith("/")) {
+      path += "index.html"; 
+    }
+    // Remove the leading slash if present for the API call
+    if (path.startsWith("/")) {
+      path = path.substring(1);
+    }
+
+    // 3. Try to fetch the specific file's commit history first
+    let url = `https://api.github.com/repos/${owner}/${repo}/commits?path=${path}&per_page=1`;
+
+    function fetchDate(apiUrl, isFallback = false) {
+      fetch(apiUrl)
+        .then(response => {
+          if (!response.ok) throw new Error('Network response issues');
+          return response.json();
+        })
+        .then(data => {
+          if (data && data.length > 0) {
+            // Extract the ISO date string (e.g., "2026-07-03T10:04:20Z")
+            const commitDateStr = data[0].commit.committer.date;
+            const commitDate = new Date(commitDateStr);
+            
+            // Format it cleanly (e.g., "July 3, 2026")
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = commitDate.toLocaleDateString(undefined, options);
+            
+            document.getElementById("message").textContent = formattedDate;
+          } else if (!isFallback) {
+            // If the specific file history returned empty (e.g., running locally), fall back to general repo history
+            const repoUrl = `https://api.github.com/repos/${owner}/${repo}/commits?per_page=1`;
+            fetchDate(repoUrl, true);
+          } else {
+            document.getElementById("message").textContent = "Recently";
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching commit date:", error);
+          // Fallback to general repo commits if the specific path failed due to environment issues
+          if (!isFallback) {
+            const repoUrl = `https://api.github.com/repos/${owner}/${repo}/commits?per_page=1`;
+            fetchDate(repoUrl, true);
+          } else {
+            document.getElementById("message").textContent = "Recently";
+          }
+        });
+    }
+
+    fetchDate(url);
+  })();
+</script>
 </body>
+</html>
